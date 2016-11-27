@@ -1,0 +1,60 @@
+# Basic
+title: 吴明富
+subtitle: 个人博客
+description: 江湖人称小明~
+# 头像里面的标题
+avatarTitle: isaac
+# 头像里面的描述
+avatarDesc: HTML5 / 前端学习
+url: "http://www.itrain.top"
+# 作者
+author: 吴明富
+
+# Comment
+comment:
+    # disqus: leopard
+    duoshuo: itrainhub 
+    # gentie: itrain
+
+# Social
+social:
+    # weibo: 5366874726 
+    github: itrainhub
+    # twitter: 
+    mail: services@itrain.top
+    qq: 156246158
+
+# 百度统计 
+# 使用博客模板请去掉或者更换 id 
+# baidu:
+#     id:adfadsfadsf 
+
+# Google Analytics
+# 使用博客模板请去掉或者更换 id
+# ga:
+#     id: UA-84134159-3   
+#     host: auto  
+
+permalink: /:year/:month/:title/
+# Format
+highlighter: rouge
+
+# supported colors: blue, green, purple, red, orange or slate. If you need clear, leave it empty.
+cover_color: clear
+
+# The blog button should not be removed.
+blog_button:
+    title: 首页
+
+# Navigation buttons in the front page.s
+nav:
+    - {title: 所有文章, description: archive, url: '/archive'}   
+    - {title: 分类, description: category, url: '/categories'}  
+    # - {title: 标签, description: tags, url: '/tags'}      
+    - {title: 关于我, description: about, url: '/about'}    
+    
+
+# Pagination
+gems: [jekyll-paginate]
+paginate: 30
+paginate_path: "page/:num/"
