@@ -116,17 +116,42 @@ JavaScript 中数组也是弱类型的，数组中可以含有不同类型的元
 
 **连接**
 
-*	concat(arrayX,arrayX,......,arrayX)：连接两个或多个数组，返回连接后的数组。
+*	concat(arrayX,arrayX,......,arrayX)：连接两个或多个数组，返回连接后的数组。原数组不受影响。
 *	join()：使用指定的分隔符将数组中每个元素连接成一个字符串。
 
 示例：
 
 	var array1 = [3, 9, 2, 6, 4],
-	array2 = [1, 5, 18, 8, 7];
+		array2 = [1, 5, 18, 8, 7];
 	var array = array1.concat(array2);
 	console.log(array); // [3, 9, 2, 6, 4, 1, 5, 18, 8, 7]
 	var str = array.join("-");
 	console.log(str); // 3-9-2-6-4-1-5-18-8-7
+
+**截取子元素**
+
+*	slice(start, end)：从 start 索引处开始截取子元素，到 end 索引处结束，包含开始索引处元素，不包含结束索引处元素。可省略 end 参数，表示一直截取到数组末尾。
+
+注意：参数也可以取负数。如果是负数，那么它规定从数组尾部开始算起的位置。也就是说，-1 指最后一个元素，-2 指倒数第二个元素，以此类推。
+
+示例：
+
+	var array = [3, 9, 2, 6, 4],
+		sub1 = array.slice(1, 3),
+		sub2 = array.slice(2),
+		sub3 = array.slice(-2),
+		sub4 = array.slice(-4, -1);
+	console.log(sub1);
+	console.log(sub2);
+	console.log(sub3);
+	console.log(sub4);
+
+结果：
+
+	[9, 2]
+	[2, 6, 4]
+	[6, 4]
+	[9, 2, 6]
 
 ### 5. 数组迭代 ###
 
