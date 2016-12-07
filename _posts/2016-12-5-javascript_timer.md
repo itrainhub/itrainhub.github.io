@@ -62,6 +62,16 @@ setInterval() 和 setTimeout 的不同之处在于，setInterval() 是每隔指�
 
 示例：
 
+	function showTime() {
+		console.log(new Date());
+	}
+
+	console.log("start...");
+	setInterval(showTime, 1000);
+	console.log("end...");
+
+执行结果：
+
 	start...
 	end...
 	Mon Dec 05 2016 17:10:13 GMT+0800 (中国标准时间)
