@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Git使用教程
+title: Git 使用教程
 date: 2016-11-17
 category: 工具
 tags: [git, github, repository]

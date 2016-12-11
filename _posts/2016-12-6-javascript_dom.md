@@ -445,7 +445,8 @@ getComputedStyle() 方法在 IE9 之前的版本中不支持，对于 IE 老版�
 为解决老版本 IE 浏览器获取样式的兼容性问题，我们可以做如下封装：
 
 	function css(element, attr) {
-		return element.currentStyle ? element.currentStyle[attr] : getComputedStyle(element)[attr];
+		return element.currentStyle ? element.currentStyle[attr] : 
+				getComputedStyle(element)[attr];
 	}
 
 示例：
@@ -468,7 +469,8 @@ getComputedStyle() 方法在 IE9 之前的版本中不支持，对于 IE 老版�
 			console.log("宽度：" + _width);
 
 			function css(element, attr) {
-				return element.currentStyle ? element.currentStyle[attr] : getComputedStyle(element)[attr];
+				return element.currentStyle ? element.currentStyle[attr] : 
+						getComputedStyle(element)[attr];
 			}
 		</script>
 	</body>
