@@ -44,7 +44,7 @@ npm 是 node package manager 的简称，它是 Nodejs 的包管理器，用于 
 
 	npm install <name> [-g] [--save-dev]
 	
-<name> 表示插件名称，如 gulp
+\<name> 表示插件名称，如 gulp。
 
 -g 表示全局安装。全局安装可以通过命令行在任何地方调用它，本地安装（非全局安装）将安装在定位目录的 node_modules 文件夹下，通过 require() 调用。
 
