@@ -279,7 +279,7 @@ $ git commit -m 'info'
 
 第一：如果我知道要删掉那些内容的话，直接手动更改去掉那些需要的文件，然后 `git add` 添加到暂存区，最后 commit。
 
-第二：使用 `git reset –hard HEAD^` 回退到上一个版本（稍后讲解）。
+第二：使用 `git reset --hard HEAD^` 回退到上一个版本（稍后讲解）。
 
 第三：通过上图我们可以看到提示使用 `git checkout -- <file>...` 来丢弃已做的修改。
 

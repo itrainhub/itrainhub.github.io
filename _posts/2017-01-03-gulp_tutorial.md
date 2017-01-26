@@ -48,7 +48,7 @@ npm 是 node package manager 的简称，它是 Nodejs 的包管理器，用于 
 
 -g 表示全局安装。全局安装可以通过命令行在任何地方调用它，本地安装（非全局安装）将安装在定位目录的 node_modules 文件夹下，通过 require() 调用。
 
---save 表示将保存配置信息至 package.json 文件，package.json 是 Nodejs 项目配置文件。之所以要保存至 package.json，是因为 Nodejs 插件包相对来说非常庞大，将配置信息写入 package.json 并将其加入版本管理，其他开发者对应下载即可（命令提示符执行 `npm install`，则会根据 package.json 下载所有需要的包，`npm install --production` 只下载 dependencies 节点的包）。
+\--save 表示将保存配置信息至 package.json 文件，package.json 是 Nodejs 项目配置文件。之所以要保存至 package.json，是因为 Nodejs 插件包相对来说非常庞大，将配置信息写入 package.json 并将其加入版本管理，其他开发者对应下载即可（命令提示符执行 `npm install`，则会根据 package.json 下载所有需要的包，`npm install --production` 只下载 dependencies 节点的包）。
 
 -dev 表示保存至 package.json 的 devDependencies 节点，不指定 -dev 将保存至 dependencies 节点；一般保存在 dependencies 的像这些：express/ejs/body-parser 等。
 
@@ -195,7 +195,7 @@ fn 为任务函数，我们把任务要执行的代码都写在里面。该参�
 
 	var minifyCss = require("gulp-minify-css");
 	gulp.task("minify-css", function(){
-		return gulp.src("css/*.css")
+		gulp.src("css/*.css")
 			.pipe(minifyCss({
 				advanced:false, // 是否开启高级优化（合并选择器等）
 				compatibility:"ie7", // 启用兼容模式；'ie7'：IE7兼容模式，'ie8'：IE8兼容模式，'*'：IE9+兼容模式
@@ -213,12 +213,12 @@ fn 为任务函数，我们把任务要执行的代码都写在里面。该参�
 
 	var uglify = require("gulp-uglify");
 	gulp.task("uglify", function(){
-		return gulp.src(["js/*.js", "!js/*.min.js"])
-				.pipe(uglify({
-					mangle:true, // 是否修改变量名
-					compress:true // 是否完全压缩
-				}))
-				.pipe(gulp.dest("dist/js"));
+		gulp.src(["js/*.js", "!js/*.min.js"])
+			.pipe(uglify({
+				mangle:true, // 是否修改变量名
+				compress:true // 是否完全压缩
+			}))
+			.pipe(gulp.dest("dist/js"));
 	});
 	
 执行 JS 压缩任务：
@@ -259,13 +259,13 @@ globs 文件匹配模式说明：
 
 `!(pattern|pattern|pattern)` 匹配任何与括号中给定的任一模式都不匹配的
 
-`?(pattern|pattern|pattern)` 匹配括号中给定的任一模式0次或1次，类似于 js 正则中的(pattern|pattern|pattern)?
+`?(pattern|pattern|pattern)` 匹配括号中给定的任一模式0次或1次，类似于 js 正则中的(pattern\|pattern\|pattern)?
 
-`+(pattern|pattern|pattern)` 匹配括号中给定的任一模式至少1次，类似于 js 正则中的(pattern|pattern|pattern)+
+`+(pattern|pattern|pattern)` 匹配括号中给定的任一模式至少1次，类似于 js 正则中的(pattern\|pattern\|pattern)+
 
-`*(pattern|pattern|pattern)` 匹配括号中给定的任一模式0次或多次，类似于 js 正则中的(pattern|pattern|pattern)*
+`*(pattern|pattern|pattern)` 匹配括号中给定的任一模式0次或多次，类似于 js 正则中的(pattern\|pattern\|pattern)\*
 
-`@(pattern|pattern|pattern)` 匹配括号中给定的任一模式1次，类似于 js 正则中的(pattern|pattern|pattern)
+`@(pattern|pattern|pattern)` 匹配括号中给定的任一模式1次，类似于 js 正则中的(pattern\|pattern\|pattern)
 
 `gulp.src("css/*.css")` 表示匹配 css 文件夹下所有后缀为 .css 的文件。
 
@@ -282,6 +282,30 @@ gulp.dest() 方法是用来写文件的，可以通过管道传输。语法结�
 Gulp 的使用流程一般是：先通过 gulp.src() 方法获取到我们想要处理的文件流，然后把文件流通过 pipe() 方法导入到 gulp 的插件中，最后把经过插件处理后的流再通过 pipe() 方法导入到 gulp.dest() 中，gulp.dest() 方法则把流中的内容写入到文件中。
 
 我们给 gulp.dest() 传入的路径参数，只能用来指定要生成的文件的目录，而不能指定生成文件的文件名，它生成文件的文件名使用的是导入到它的文件流自身的文件名，所以生成的文件名是由导入到它的文件流决定的。
+
+### 3.5 gulp.watch() 方法
+
+gulp.watch 方法是用来监视文件修改的，语法结构为：
+
+	gulp.watch(glob [, opts], tasks) // 或
+	gulp.watch(glob [, opts, cb])
+
+glob 表示要监视的文件匹配模式说明，通常是字符串或数组的结构；opts 参数较少使用；tasks 表示当文件发生变化时要执行的任务，该任务是通过 gulp.task() 添加的，参数数据类型为数组类型；cb 表示回调函数，会在每次改变时都被调用到。
+
+使用 tasks 参数示例：
+
+	var watcher = gulp.watch('js/**/*.js', ['uglify','reload']);
+	watcher.on('change', function(event) {
+		console.log('文件路径：' + event.path + '，类型：' + event.type);
+	});
+
+也可以使用回调函数：
+
+	gulp.watch('js/**/*.js', function(event) {
+		console.log('文件路径：' + event.path + '，类型：' + event.type);
+	});
+
+回调函数会传递 event 参数来描述所作的改变，该 event 对象有 type 和 path 两个属性。type 描述发生改变的类型，包括：added、changed、deleted 和 renamed；path 描述触发事件的文件路径。
 
 ## 4. 常用 Gulp 插件
 
@@ -351,15 +375,15 @@ gulp-concat 可用来把多个文件合并为一个文件，我们可以用它�
 	var gulp = require('gulp'),
 		sass = require("gulp-sass");
 	gulp.task("sass", function(){
-		return gulp.src("scss/*.scss")
-					.pipe(sass()) // 编译 sass
-					.pipe(minifyCss({ // 压缩 CSS
-						advanced:true,
-						compatibility:"ie7",
-						keepBreaks:false,
-						keepSpecialComments:"*"
-					}))
-					.pipe(gulp.dest("dist/css"));
+		gulp.src("scss/*.scss")
+			.pipe(sass()) // 编译 sass
+			.pipe(minifyCss({ // 压缩 CSS
+				advanced:true,
+				compatibility:"ie7",
+				keepBreaks:false,
+				keepSpecialComments:"*"
+			}))
+			.pipe(gulp.dest("dist/css"));
 	});
 	
 gulp-sass 是调用 node-sass 来完成编译过程，有 node.js 环境就够了，但有的时候可能在安装 node-sass 过程中出错，只需要重新安装即可。
@@ -419,4 +443,3 @@ gulp-sass 是调用 node-sass 来完成编译过程，有 node.js 环境就够�
 	});
 	
 browsers 指明浏览器信息，详情参见 [browsers 参数详解](https://github.com/ai/browserslist#queries)。
-
