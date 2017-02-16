@@ -1,3 +1,1 @@
-#### 感谢
-
-本博客在[潘柏信](http://baixin.io/)基础上调整修改的。
+本博客主要整理各类技术文章，本站所有技术文章均属原创，如有引用请注明出处：<a href="http://itrain.top">http://itrain.top</a>
