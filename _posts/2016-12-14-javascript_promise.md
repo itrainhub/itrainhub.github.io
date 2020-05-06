@@ -1,16 +1,15 @@
 ---
-layout: post
 title: JavaScript Promise 模式
-date: 2016-12-14
-category: JavaScript
-tags: [JavaScript, Promise]
+category: javascript
+tags: [javascript, Promise]
+key: javascript_promise
 ---
 
 ## 1. 简介 ##
 
 在介绍 Promise 对象之前，我们先来看一个例子：
 
-```
+```javascript
 step1(function (value1) {
 	step2(value1, function(value2) {
 		step3(value2, function(value3) {
@@ -26,7 +25,7 @@ step1(function (value1) {
 
 这种写法当然在一定程度上也会给我们造成困扰，因为嵌套层次太多，对于代码的阅读来说也变得更加困难。如果我们换成以下的调用方式，相信大家在阅读时会更轻松：
 
-```
+```javascript
 (new Promise(step1))
   .then(step2)
   .then(step3)
@@ -47,7 +46,7 @@ Promises 原本只是社区提出的一个构想，一些外部函数库率先�
 
 ES6 的 Promise 对象是一个构造函数，用来生成 Promise 实例。下面是 Promise 对象的基本用法：
 
-```
+```javascript
 var promise = new Promise(function(resolve, reject) {
 	if (/* 异步操作成功 */){
 		resolve(value);
@@ -77,7 +76,7 @@ promise 实例生成以后，可以用 then 方法分别指定 resolve 方法和
 
 下面是一个使用 Promise 对象的简单例子：
 
-```
+```javascript
 function timeout(ms) {
 	return new Promise(function(resolve){
 		setTimeout(resolve, ms);
@@ -95,9 +94,40 @@ timeout() 函数返回一个 Promise 对象，经过一段时间（1s）后调�
 
 ajax 是最常使用到的异步操作，我们可以用通用作法来封装 ajax 函数：
 
-	<script type="text/javascript">
-		// 通用封装方法
-		function getJSON(url, success, error) {
+```javascript
+<script type="text/javascript">
+	// 通用封装方法
+	function getJSON(url, success, error) {
+		var xhr = new XMLHttpRequest();
+		xhr.open("get", url, true);
+		xhr.send();
+		xhr.onreadystatechange = function(){
+			if (xhr.readyState === 4) {
+				if(xhr.status === 200) {
+					var data = JSON.parse(xhr.responseText);
+					success && success(data);
+				} else {
+					error && error(xhr.statusText);
+				}
+			}
+		}
+	}
+
+	getJSON("/search.php?category=1", function(data){
+		console.log("result : " + data);
+	}, function(reason){
+		console.log("error : " + reason);
+	});
+</script>
+```
+
+当响应成功时，传递 success 函数，如果响应失败，则传递 error 函数，那么，如果在响应成功时有多个需要执行的函数时，又需要修改封装函数结构，非常不方便，我们可以将 ajax 操作使用 Promise 模式来封装，这样就能解决上述问题了：
+
+```html
+<script type="text/javascript">
+	// 使用 Promise 模式封装 ajax 操作
+	function getJSON(url) {
+		var p = new Promise(function(resolve, reject){
 			var xhr = new XMLHttpRequest();
 			xhr.open("get", url, true);
 			xhr.send();
@@ -105,87 +135,66 @@ ajax 是最常使用到的异步操作，我们可以用通用作法来封装 aj
 				if (xhr.readyState === 4) {
 					if(xhr.status === 200) {
 						var data = JSON.parse(xhr.responseText);
-						success && success(data);
+						resolve(data); // 正常响应得到数据，成功
 					} else {
-						error && error(xhr.statusText);
+						reject(xhr.statusText); // 失败
 					}
 				}
 			}
-		}
-
-		getJSON("/search.php?category=1", function(data){
-			console.log("result : " + data);
-		}, function(reason){
-			console.log("error : " + reason);
 		});
-	</script>
 
-当响应成功时，传递 success 函数，如果响应失败，则传递 error 函数，那么，如果在响应成功时有多个需要执行的函数时，又需要修改封装函数结构，非常不方便，我们可以将 ajax 操作使用 Promise 模式来封装，这样就能解决上述问题了：
+		return p;
+	}
 
-	<script type="text/javascript">
-		// 使用 Promise 模式封装 ajax 操作
-		function getJSON(url) {
-			var p = new Promise(function(resolve, reject){
-				var xhr = new XMLHttpRequest();
-				xhr.open("get", url, true);
-				xhr.send();
-				xhr.onreadystatechange = function(){
-					if (xhr.readyState === 4) {
-						if(xhr.status === 200) {
-							var data = JSON.parse(xhr.responseText);
-							resolve(data); // 正常响应得到数据，成功
-						} else {
-							reject(xhr.statusText); // 失败
-						}
-					}
-				}
-			});
+	getJSON("/search.php?category=1").then(function(data){
+		console.log("result : " + data);
+	}, function(reason){
+		console.log("error : " + reason);
+	});
+</script>
+```
 
-			return p;
-		}
-
-		getJSON("/search.php?category=1").then(function(data){
-			console.log("result : " + data);
-		}, function(reason){
-			console.log("error : " + reason);
-		});
-	</script>
-	
 ## 4. Promise.prototype.then()
 
 then() 方法返回一个 Promise 对象的实例。它有两个参数，分别为 Promise 在 success 和 failure 情况下的回调函数。
 
 语法：
 
-	p.then(function(value) {
-		// 满足
-		}, function(reason) {
-		// 拒绝
-		});
-		
+```javascript
+p.then(function(value) {
+	// 满足
+	}, function(reason) {
+	// 拒绝
+	});
+```
+
 由于 then 返回的是 Promise 实例，我们可以轻易的链式调用 then：
 
-	getJSON("/search.php?category=1").then(function(data){
-		console.log("result : " + data);
-		return data;
-	}, function(reason){
-		console.log("error : " + reason);
-		return reason;
-	}).then(function(data){
-		console.log("go on... result : " + data);
-	}, function(reason){
-		console.log("go on... error : " + reason);
-	});
-	
+```javascript
+getJSON("/search.php?category=1").then(function(data){
+	console.log("result : " + data);
+	return data;
+}, function(reason){
+	console.log("error : " + reason);
+	return reason;
+}).then(function(data){
+	console.log("go on... result : " + data);
+}, function(reason){
+	console.log("go on... error : " + reason);
+});
+```
+
 当然，如果前一个 then 回调函数返回的是 Promise 对象，则后一个 then 会等到该 Promise 对象有执行结果后再继续执行：
 
-	getJSON("/search.php?category=1").then(function(data){
-		console.log("result : " + data.url);
-		return getJSON(data.url);
-	}).then(function(data){
-		console.log("go on... result : " + data);
-	});
-	
+```javascript
+getJSON("/search.php?category=1").then(function(data){
+	console.log("result : " + data.url);
+	return getJSON(data.url);
+}).then(function(data){
+	console.log("go on... result : " + data);
+});
+```
+
 这样，原本应该嵌套的调用结构变成了链式调用的结构，使用同步的写法来达到了异步的操作。
 
 ## 5. Promise.prototype.resolve() 与 Promise.prototype.reject()
@@ -196,28 +205,34 @@ Promise.reject(reason) 方法返回一个用 reason 拒绝的 Promise 对象。
 
 示例：
 
-	Promise.resolve(getJSON("/search.php?category=1")).then(function(data){
-		console.log("result : " + data);
-	});
-	
+```javascript
+Promise.resolve(getJSON("/search.php?category=1")).then(function(data){
+	console.log("result : " + data);
+});
+```
+
 如果 Promise.resolve() 参数是 thenable 对象，则返回的 promise “跟随” 返回的参数 thenable 对象，即传递的 Promise 对象参数原封不动的返回。否则：
 
-	Promise.resolve("resolve data").then(function(data){
-		console.log("result : " + data);
-	});
-	
+```javascript
+Promise.resolve("resolve data").then(function(data){
+	console.log("result : " + data);
+});
+```
+
 生成一个新 Promise 实例，状态为 fulfilled，所以回调函数立即执行。
 
 静态函数 Promise.reject() 返回一个被拒绝的 Promise。使用是 Error 实例的 reason 对调试和选择性错误捕捉很有帮助：
 
-	Promise.reject("Testing static reject").then(function(data) {
-		// 未被调用
-	}, function(reason) {
-		console.log(reason); // "测试静态拒绝"
-	});
+```javascript
+Promise.reject("Testing static reject").then(function(data) {
+	// 未被调用
+}, function(reason) {
+	console.log(reason); // "测试静态拒绝"
+});
 
-	Promise.reject(new Error("fail")).then(function(data) {
-		// 未被调用
-	}, function(error) {
-		console.log(error); // 堆栈跟踪
-	});
+Promise.reject(new Error("fail")).then(function(data) {
+	// 未被调用
+}, function(error) {
+	console.log(error); // 堆栈跟踪
+});
+```

@@ -1,60 +1,130 @@
-# Basic
-title: 吴明富
-subtitle: 个人博客
-description: 江湖人称小明~
-# 头像里面的标题
-avatarTitle: isaac
-# 头像里面的描述
-avatarDesc: HTML5 / 前端学习
-url: "http://itrain.top/"
-# 作者
-author: 吴明富
+## => Site Settings
+##############################
+url     : http://itrain.top
+title   : itrain
+description: >
+  介绍HTML5大前端相关技术，传递前端热点信息
 
-# Comment
-comment:
-    # disqus: leopard
-    duoshuo: itrainhub 
-    # gentie: itrain
+## => Author and Social
+##############################
+author:
+  type      : person
+  name      : isaac
+  url       : http://itrain.top
+  avatar    : /assets/images/avatar.png
+  bio       : HTML5 前端工程师，平时喜欢逛逛技术论坛，整理一些个人笔记，空闲时间搞点新技术。
+  email     : zhliro1102@gmail.com
+  facebook  : # "user_name" the last part of your profile url, e.g. https://www.facebook.com/user_name
+  twitter   : # "user_name" the last part of your profile url, e.g. https://twitter.com/user_name
+  weibo     : # "user_id"   the last part of your profile url, e.g. https://www.weibo.com/user_id/profile?...
+  googleplus: # "user_id"   the last part of your profile url, e.g. https://plus.google.com/u/0/user_id
+  telegram  : # "user_name" the last part of your profile url, e.g. https://t.me/user_name
+  medium    : # "user_name" the last part of your profile url, e.g. https://medium.com/user_name
+  zhihu     : # "user_name" the last part of your profile url, e.g. https://www.zhihu.com/people/user_name
+  douban    : # "user_name" the last part of your profile url, e.g. https://www.douban.com/people/user_name
+  linkedin  : # "user_name" the last part of your profile url, e.g. https://www.linkedin.com/in/user_name
+  github    : itrainhub
+  npm       : # "user_name" the last part of your profile url, e.g. https://www.npmjs.com/~user_name
 
-# Social
-social:
-    # weibo: 5366874726 
-    github: itrainhub
-    # twitter: 
-    mail: services@itrain.top
-    qq: 156246158
+## => GitHub Repository (if the site is hosted by GitHub)
+##############################
+repository: itrainhub/itrainhub.github.io
+repository_tree: master
 
-# 百度统计 
-# 使用博客模板请去掉或者更换 id 
-# baidu:
-#     id:adfadsfadsf 
+## => Post
+##############################
+## excerpt
+excerpt_separator: <!--more-->
 
-# Google Analytics
-# 使用博客模板请去掉或者更换 id
-# ga:
-#     id: UA-84134159-3   
-#     host: auto  
+## => Paginate
+##############################
+paginate: 20
+paginate_path: /page:num
 
-permalink: /:year/:month/:title/
-# Format
-highlighter: rouge
+## => Comments
+##############################
+comments:
+  provider: valine
 
-# supported colors: blue, green, purple, red, orange or slate. If you need clear, leave it empty.
-cover_color: clear
+  ## Valine
+  valine:
+    app_id      : 3bxgEnYSeOD9ahnBY0WjDdBF-gzGzoHsz
+    app_key     : n0CKGMrvPFgtAnOUY7vDY563
+    placeholder : 请输入评论内容！
+    lang        : 'zh-CN'
+    avatar      : robohash
 
-# The blog button should not be removed.
-blog_button:
-    title: 首页
+license: CC-BY-NC-4.0
 
-# Navigation buttons in the front page.s
-nav:
-    - {title: 所有文章, description: archive, url: '/archive'}   
-    - {title: 分类, description: category, url: '/categories'}  
-    # - {title: 标签, description: tags, url: '/tags'}      
-    - {title: 关于我, description: about, url: '/about'}    
-    
+## => Pageview
+##############################
+pageview:
+  provider: leancloud
 
-# Pagination
-gems: [jekyll-paginate]
-paginate: 30
-paginate_path: "page/:num/"
+  ## Leancloud
+  leancloud:
+    app_id    : 3bxgEnYSeOD9ahnBY0WjDdBF-gzGzoHsz
+    app_key   : n0CKGMrvPFgtAnOUY7vDY563
+    app_class : blog
+
+## => Search
+##############################
+search:
+  provider: default
+  
+## => Analytics
+##############################
+analytics:
+  provider: google
+
+  ## Google Analytics
+  google:
+    tracking_id : UA-163557335-1
+    anonymize_ip: false # Anonymize IP tracking for Analytics
+
+## => Build
+##############################
+markdown    : kramdown
+highlighter : rouge
+permalink   : /:year/:month/:title/
+
+kramdown:
+  syntax_highlighter_opts:
+    block:
+      line_numbers: true
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - LICENSE
+  - README-*.md
+  - README.md
+  - itrain_blog.gemspec
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: article
+      sharing: true
+      license: true
+      aside:
+        toc: true
+      show_edit_on_github: false
+      show_subscribe: true
+      pageview: true
+
+## => Plugins
+##############################
+plugins:
+  - jekyll-feed
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jemoji
+  - jekyll-minifier
+  - jekyll-last-modified-at
+
+jekyll-minifier:
+  uglifier_args:
+    harmony: true

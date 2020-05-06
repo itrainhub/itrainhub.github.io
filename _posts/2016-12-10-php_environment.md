@@ -1,9 +1,8 @@
 ---
-layout: post
 title: PHP 集成环境搭建
-date: 2016-12-10
 category: PHP
-tags: [PHP]
+tags: [php]
+key: php_environment
 ---
 
 俗话说，工欲善其事，必先利其器。要学习 PHP 开发，也必须先搭建能够运行 PHP 的环境。
@@ -16,7 +15,7 @@ tags: [PHP]
 
 wampserver 官方网站为 [http://www.wampserver.com/en/](http://www.wampserver.com/en/)，点击导航中 DOWNLOAD 下载，根据操作系统位数选取 32 位或 64 位版本下载。
 
-![下载](/images/posts/phpevmt/download.png)
+![下载](/assets/images/phpevmt/download.png)
 
 下载完毕后不能立刻安装，因为要安装 wmap 还需要 VC++ 运行库的支持。详情可见 [https://sourceforge.net/projects/wampserver/files/WampServer%203/WampServer%203.0.0/](https://sourceforge.net/projects/wampserver/files/WampServer%203/WampServer%203.0.0/) 的说明。
 
@@ -52,13 +51,13 @@ wampserver 官方网站为 [http://www.wampserver.com/en/](http://www.wampserver
 
 先安装 VC++ 运行库，按照从小到大顺序一一安装；再安装 wampserver。按下图中各程序顺序安装即可：
 
-![安装](/images/posts/phpevmt/install.png)
+![安装](/assets/images/phpevmt/install.png)
 
 注意，最好将 wampserver 安装在某个根目录下的文件夹中，比如：c:\\wamp、d:\\wamp 目录。确保在安装路径中不要有空格或特殊符号，不要安装在如 c:\\program files\\ 或 c:\\program files (x86)\\ 下，当然更不能安装在中文路径下了。
 
 安装完成后，运行桌面 Wampserver 快捷方式，在任务栏右下角，会出现 wampserver 管理工具图标：
 
-![安装](/images/posts/phpevmt/server_icon.png)
+![安装](/assets/images/phpevmt/server_icon.png)
 
 可以右键单击该图标，进入 Language 菜单项，选择 Chinese 将语言设置为简体中文。
 
@@ -66,8 +65,8 @@ wampserver 官方网站为 [http://www.wampserver.com/en/](http://www.wampserver
 
 启动 Wampserver 后，如果各端口未被占用，则可以直接打开浏览器，在地址栏中输入 [http://localhost](http://localhost) 或 [http://127.0.0.1](http://127.0.0.1) 进行访问，能够打开类似如下页面，则说明 Wampserver 安装成功了：
 
-![index.php](/images/posts/phpevmt/page.png)
+![index.php](/assets/images/phpevmt/page.png)
 
 当然，Wampserver 默认的 apache 服务器端口为 80 端口，mysql 数据库端口为 3306 端口，如果想使用其它的端口，可以直接通过配置工具修改：
 
-![配置端口](/images/posts/phpevmt/config.png)
+![配置端口](/assets/images/phpevmt/config.png)

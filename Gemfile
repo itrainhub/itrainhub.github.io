@@ -1,4 +1,4 @@
-source 'http://gems.ruby-china.org'
-gem 'jekyll'
-gem 'redcarpet'
-gem 'jekyll-paginate'
+source "https://gems.ruby-china.com"
+
+# gem "github-pages", group: :jekyll_plugins
+gemspec

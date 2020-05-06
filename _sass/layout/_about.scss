@@ -1,0 +1,20 @@
+.about {
+  &__container {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+  }
+    
+  &__avatar {
+    max-width: 200px;
+    margin: 10px;
+    & > img {
+      width: 100%;
+    }
+  }
+
+  &__info {
+    line-height: 2;
+    list-style: none;
+  }
+}

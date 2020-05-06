@@ -1,9 +1,8 @@
 ---
-layout: post
 title: JavaScript 中 == 与 === 的区别
-date: 2016-11-20
-category: JavaScript
+category: javascript
 tags: [javascript]
+key: javascript_equals_compare
 ---
 
 ### 基本情况 ###
@@ -31,7 +30,7 @@ tags: [javascript]
 
 举例：
 
-```
+```javascript
 alert("1" == true); // true
 ```
 

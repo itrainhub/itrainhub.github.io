@@ -1,9 +1,8 @@
 ---
-layout: post
 title: JavaScript 执行顺序
-date: 2016-11-25
-category: JavaScript
-tags: [JavaScript]
+category: javascript
+tags: [javascript]
+key: javascript_execution_order
 ---
 
 我们都知道，JavaScript 是一种描述型脚本语言，它不同于 Java 或 C# 等编译性语言，它不需要进行编译成中间语言，而是由浏览器进行动态地解析与执行。如果你不能了解[浏览器是如何工作的](/2016/11/javascript_how_broswers_work/)，不能了解 JavaScript 的执行顺序，那你就犹如伯乐驾驭不了千里马。
@@ -16,24 +15,28 @@ tags: [JavaScript]
 
 JavaScript 中的代码块是指由 \<script> 标签分隔的代码段。JavaScript 是按照代码块来进行编译和执行的，代码块之间相互独立的，但是变量和函数可以共享。举个粟子：
 
-	<script type="text/javascript">
-		/* 代码块一 */
-		var val = "variable in first block"; // 定义变量
-		console.log(info); // 因为没有定义 info，浏览器会出错，下面的语句都不能运行
-		console.log("first block");
-	</script>
+```javascript
+<script type="text/javascript">
+	/* 代码块一 */
+	var val = "variable in first block"; // 定义变量
+	console.log(info); // 因为没有定义 info，浏览器会出错，下面的语句都不能运行
+	console.log("first block");
+</script>
 
-	<script type="text/javascript">
-		/* 代码块二 */
-		console.log("second block...");
-		console.log(val);
-	</script>
+<script type="text/javascript">
+	/* 代码块二 */
+	console.log("second block...");
+	console.log(val);
+</script>
+```
 
 运行结果：
 
-	Uncaught ReferenceError: info is not defined
-	second block...
-	variable in first block
+```javascript
+Uncaught ReferenceError: info is not defined
+second block...
+variable in first block
+```
 
 从结果中可以看出，在代码块一中运行报错，则报错行后的剩余部分不再执行，但它不会影响代码块二的执行，这就是代码块间的独立性，而代码块二中能调用到代码一中的变量 val，则是块间共享性。
 
@@ -41,17 +44,19 @@ JavaScript 中的代码块是指由 \<script> 标签分隔的代码段。JavaScr
 
 我在 [JavaScript 函数入门](/2016/11/javascript_function_started/) 一文中已经介绍了函数声明与函数表达式：
 
-	// 函数声明
-	function functionName([param1[, param2]...) {
-		// function_body;
-		// [return exp;]
-	}
-	
-	// 函数表达式
-	var func = function([param1[, param2]...){
-		// function_body;
-		// [return exp;]
-	}
+```javascript
+// 函数声明
+function functionName([param1[, param2]...) {
+	// function_body;
+	// [return exp;]
+}
+
+// 函数表达式
+var func = function([param1[, param2]...){
+	// function_body;
+	// [return exp;]
+}
+```
 
 函数声明与函数表达式的区别在于：在 JS 的预编译期，函数声明将会先被提取出来，然后再按顺序执行 JS 代码。
 
@@ -61,40 +66,46 @@ JavaScript 中的代码块是指由 \<script> 标签分隔的代码段。JavaScr
 
 执行期当然就是负责 JS 代码块的执行。
 
-	<script type="text/javascript">  
-		console.log(str); 
-		var str = "aaa";  
-		func(); 
+```javascript
+<script type="text/javascript">  
+	console.log(str); 
+	var str = "aaa";  
+	func(); 
 
-		// 声明函数
-		function func(){ 
-			console.log("执行了声明式函数");  
-		}  
-	    
-		// 函数表达式
-		var func = function(){ 
-			console.log("执行了赋值式函数");  
-		}  
-	</script> 
+	// 声明函数
+	function func(){ 
+		console.log("执行了声明式函数");  
+	}  
+    
+	// 函数表达式
+	var func = function(){ 
+		console.log("执行了赋值式函数");  
+	}  
+</script> 
+```
 
 执行结果：
 	
-	undefined
-	执行了声明式函数
+```javascript
+undefined
+执行了声明式函数
+```
 
 以上结果是因为在预编译期，变量名称 str、func 和函数声明都做了提升 (hoisting)，但因为函数声明优先级高于变量声明，所以调用 `func()` 时仍然调用到了命名函数来执行。
 
 我们再来看一段代码：
 
-	<script type="text/javascript">  
-		func();
-	</script>
+```html
+<script type="text/javascript">  
+	func();
+</script>
 
-	<script type="text/javascript">  
-		function func(){
-			console.log("hello.......");  
-		}  
-	</script>
+<script type="text/javascript">  
+	function func(){
+		console.log("hello.......");  
+	}  
+</script>
+```
 
 这段代码执行后的结果是什么呢？`Uncaught ReferenceError: func is not defined`。报错了！！！
 
@@ -136,10 +147,12 @@ JavaScript 中的代码块是指由 \<script> 标签分隔的代码段。JavaScr
 
 通过文档对象模型（DOM），我们可以几乎可以页面任意地方创建脚本：
 
-	var _script = document.createElement("script"); 
-	_script.type = "text/javaScript"; 
-	_script.src = "tools.js"; 
-	document.getElementsByTagName("body")[0].appendChild(_script);
+```javascript
+var _script = document.createElement("script"); 
+_script.type = "text/javaScript"; 
+_script.src = "tools.js"; 
+document.getElementsByTagName("body")[0].appendChild(_script);
+```
 
 上述代码动态创建了一个外链文件 tools.js 的 \<script> 标签，并将其追加到 \<body> 标签内。这种技术的重点在于：无论在何时启动下载，文件的下载和执行过程不会阻塞页面其他进程（包括脚本加载）。
 

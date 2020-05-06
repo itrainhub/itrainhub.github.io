@@ -1,9 +1,8 @@
 ---
-layout: post
 title: ES5 新特性之 Array 增强 API
-date: 2016-11-30
-category: JavaScript
-tags: [JavaScript, ES5, ECMAScript, Array, API]
+category: javascript
+tags: [javascript, ES5]
+key: javascript_array_es5
 ---
 
 ## 1. 简介 ##
@@ -30,7 +29,9 @@ indexOf() 方法返回给定元素能找在数组中找到的第一个索引值�
 
 语法：
 
-	arr.indexOf(searchElement[, fromIndex = 0])
+```javascript
+arr.indexOf(searchElement[, fromIndex = 0])
+```
 
 参数说明：
 	
@@ -40,12 +41,14 @@ fromIndex：开始查找的位置。如果该索引值大于或等于数组长�
 
 示例：
 
-	var array = [2, 5, 9];
-	console.log(array.indexOf(2));     // 0
-	console.log(array.indexOf(7));     // -1
-	console.log(array.indexOf(9, 2));  // 2
-	console.log(array.indexOf(2, -1)); // -1
-	console.log(array.indexOf(2, -3)); // 0
+```javascript
+var array = [2, 5, 9];
+console.log(array.indexOf(2));     // 0
+console.log(array.indexOf(7));     // -1
+console.log(array.indexOf(9, 2));  // 2
+console.log(array.indexOf(2, -1)); // -1
+console.log(array.indexOf(2, -3)); // 0
+```
 
 ### 2.2 lastIndexOf() ###
 
@@ -53,19 +56,23 @@ lastIndexOf() 方法返回指定元素（也即有效的 JavaScript 值或变量
 
 语法：
 	
-	arr.lastIndexOf(searchElement[, fromIndex = arr.length - 1])
+```javascript
+arr.lastIndexOf(searchElement[, fromIndex = arr.length - 1])
+```
 
 其参数意思与 indexOf() 参数意思类似，只是其查找方向是从后向前，不再赘述。
 
 示例：
 
-	var array = [2, 5, 9, 2];
-	console.log(array.lastIndexOf(2)); // 3
-	console.log(array.lastIndexOf(7)); // -1
-	console.log(array.lastIndexOf(2, 3)); // 3
-	console.log(array.lastIndexOf(2, 2)); // 0
-	console.log(array.lastIndexOf(2, -2)); // 0
-	console.log(array.lastIndexOf(2, -1)); // 3
+```javascript
+var array = [2, 5, 9, 2];
+console.log(array.lastIndexOf(2)); // 3
+console.log(array.lastIndexOf(7)); // -1
+console.log(array.lastIndexOf(2, 3)); // 3
+console.log(array.lastIndexOf(2, 2)); // 0
+console.log(array.lastIndexOf(2, -2)); // 0
+console.log(array.lastIndexOf(2, -1)); // 3
+```
 
 **注意：indexOf() 与 lastIndexOf() 使用严格相等（strict equality，即 ===）比较 searchElement 和数组中的元素。**
 
@@ -79,7 +86,9 @@ forEach() 方法对数组的每个元素执行一次提供的函数(回调函数
 
 语法：
 
-	array.forEach(callback[, thisArg])
+```javascript
+array.forEach(callback[, thisArg])
+```
 
 参数说明：
 
@@ -97,38 +106,44 @@ forEach() 遍历的范围在第一次调用 callback 前就会确定。调用for
 
 示例：
 
-	var array = [3, 9, 2, 7, 6, 4];
+```javascript
+var array = [3, 9, 2, 7, 6, 4];
 
-	array.forEach(function(element, index, arr){
-		console.log("arr["+ index +"] = " + element);
-	});
+array.forEach(function(element, index, arr){
+	console.log("arr["+ index +"] = " + element);
+});
+```
 
 执行结果：
 
-	arr[0] = 3
-	arr[1] = 9
-	arr[2] = 2
-	arr[3] = 7
-	arr[4] = 6
-	arr[5] = 4
+```javascript
+arr[0] = 3
+arr[1] = 9
+arr[2] = 2
+arr[3] = 7
+arr[4] = 6
+arr[5] = 4
+```
 
 **使用 thisArg。** 举个勉强的例子 -- 从每个数组中的元素值中更新一个对象中每个属性的值：
 
-	function Counter() {
-		this.sum = 0;
-		this.count = 0;
-	}
-	Counter.prototype.add = function(array) {
-		array.forEach(function(entry) {
-			this.sum += entry;
-			this.count++;
-		}, this);
-	};
+```javascript
+function Counter() {
+	this.sum = 0;
+	this.count = 0;
+}
+Counter.prototype.add = function(array) {
+	array.forEach(function(entry) {
+		this.sum += entry;
+		this.count++;
+	}, this);
+};
 
-	var obj = new Counter();
-	obj.add([2, 5, 9]);
-	console.log(obj.count); // 3
-	console.log(obj.sum); // 16
+var obj = new Counter();
+obj.add([2, 5, 9]);
+console.log(obj.count); // 3
+console.log(obj.sum); // 16
+```
 
 ### 3.2 map() ###
 
@@ -136,7 +151,9 @@ map() 方法返回一个由原数组中的每个元素调用一个指定方法�
 
 语法：
 
-	array.map(callback[, thisArg])
+```javascript
+array.map(callback[, thisArg])
+```
 
 map() 方法的参数意思与 forEach() 方法类似，可参考 forEach() 方法的说明。
 
@@ -148,34 +165,42 @@ map() 不修改调用它的原数组本身（当然可以在 callback 执行时�
 
 示例1：
 
-	var numbers = [1, 4, 9, 16, 25];
-	var roots = numbers.map(Math.sqrt);
-	console.log("numbers = ", numbers);
-	console.log("roots = ", roots);
+```javascript
+var numbers = [1, 4, 9, 16, 25];
+var roots = numbers.map(Math.sqrt);
+console.log("numbers = ", numbers);
+console.log("roots = ", roots);
+```
 
 执行结果：
 
-	numbers =  [1, 4, 9, 16, 25]
-	roots =  [1, 2, 3, 4, 5]
+```javascript
+numbers =  [1, 4, 9, 16, 25]
+roots =  [1, 2, 3, 4, 5]
+```
 
 示例2：
 
-	function fuzzyPlural(single) {
-		var result = single.replace(/o/g, 'e');  
-		if( single === 'kangaroo'){
-			result += 'se';
-		}
-		return result; 
+```javascript
+function fuzzyPlural(single) {
+	var result = single.replace(/o/g, 'e');  
+	if( single === 'kangaroo'){
+		result += 'se';
 	}
+	return result; 
+}
 
-	var words = ["foot", "goose", "moose", "kangaroo"];
-	console.log("复数形式：", words.map(fuzzyPlural));
-	console.log("原数组：", words);
+var words = ["foot", "goose", "moose", "kangaroo"];
+console.log("复数形式：", words.map(fuzzyPlural));
+console.log("原数组：", words);
+```
 
 执行结果：
 
-	复数形式： ["feet", "geese", "meese", "kangareese"]
-	原数组： ["foot", "goose", "moose", "kangaroo"]
+```javascript
+复数形式： ["feet", "geese", "meese", "kangareese"]
+原数组： ["foot", "goose", "moose", "kangaroo"]
+```
 
 ### 3.3 filter() ###
 
@@ -183,7 +208,9 @@ filter() 方法使用指定的函数测试所有元素，并创建一个包含�
 
 语法：
 	
-	arr.filter(callback[, thisArg])
+```javascript
+arr.filter(callback[, thisArg])
+```
 
 参数与 forEach() 类似，callback 是用来测试数组的每个元素的函数，返回 true 表示保留该元素（通过测试），false 则不保留。
 
@@ -191,17 +218,21 @@ filter() 方法利用所有使得 callback 返回 true 或 等价于 true 的值
 
 示例：
 
-	var src = [12, 5, 8, 130, 44];
-	var filtered = src.filter(function (element) {
-		return element >= 10;
-	});
-	console.log("原数组：", src);
-	console.log("过滤后数组：", filtered);
+```javascript
+var src = [12, 5, 8, 130, 44];
+var filtered = src.filter(function (element) {
+	return element >= 10;
+});
+console.log("原数组：", src);
+console.log("过滤后数组：", filtered);
+```
 
 执行结果：
 
-	原数组： [12, 5, 8, 130, 44]
-	过滤后数组： [12, 130, 44]
+```javascript
+原数组： [12, 5, 8, 130, 44]
+过滤后数组： [12, 130, 44]
+```
 
 ### 3.4 some() ###
 
@@ -209,7 +240,9 @@ some() 方法测试数组中的某些元素是否通过了指定函数的测试�
 
 语法：
 
-	arr.some(callback[, thisArg])
+```javascript
+arr.some(callback[, thisArg])
+```
 
 some() 为数组中的每一个元素执行一次 callback 函数，直到找到一个使得 callback 返回一个“真值”（即可转换为布尔值 true 的值）。如果找到了这样一个值，some 将会立即返回 true。否则，some() 返回 false。
 
@@ -217,13 +250,15 @@ some() 被调用时不会改变数组。
 
 示例：
 
-	function isBigEnough(element, index, array) {
-		return (element >= 10);
-	}
-	var passed = [2, 5, 8, 1, 4].some(isBigEnough);
-	console.log(passed); // false
-	passed = [12, 5, 8, 1, 4].some(isBigEnough);
-	console.log(passed); // true
+```javascript
+function isBigEnough(element, index, array) {
+	return (element >= 10);
+}
+var passed = [2, 5, 8, 1, 4].some(isBigEnough);
+console.log(passed); // false
+passed = [12, 5, 8, 1, 4].some(isBigEnough);
+console.log(passed); // true
+```
 
 ### 3.5 every() ###
 
@@ -231,7 +266,9 @@ every() 方法测试数组的所有元素是否都通过了指定函数的测试
 
 语法：
 
-	arr.every(callback[, thisArg])
+```javascript
+arr.every(callback[, thisArg])
+```
 
 和 some() 类似，every() 方法为数组中的每个元素执行一次 callback 函数，直到它找到一个使 callback 返回 false（表示可转换为布尔值 false 的值）的元素。如果发现了一个这样的元素，every() 方法将会立即返回 false。否则，callback 为每一个元素返回 true，every() 就会返回 true。
 
@@ -239,13 +276,15 @@ every() 不会改变原数组。
 
 示例：
 
-	function isBigEnough(element, index, array) {
-		return (element >= 10);
-	}
-	var passed = [12, 5, 8, 130, 44].every(isBigEnough);
-	console.log(passed); // false
-	passed = [12, 54, 18, 130, 44].every(isBigEnough);
-	console.log(passed); // true
+```javascript
+function isBigEnough(element, index, array) {
+	return (element >= 10);
+}
+var passed = [12, 5, 8, 130, 44].every(isBigEnough);
+console.log(passed); // false
+passed = [12, 54, 18, 130, 44].every(isBigEnough);
+console.log(passed); // true
+```
 
 ## 4. 归并方法 ##
 
@@ -257,7 +296,9 @@ reduce() 方法接收一个函数作为累加器（accumulator），数组中的
 
 语法：
 
-	arr.reduce(callback,[initialValue])
+```javascript
+arr.reduce(callback,[initialValue])
+```
 
 callback 是数组中每个元素迭代时都会调用的函数，包含四个参数，形如 `function(previousValue, currentValue, index, array)`：
 
@@ -272,37 +313,45 @@ initialValue 是迭代初始值，参数可选，如果缺省，初始值为数�
 
 示例：
 
-	var scores = [88, 99, 87, 76, 67],
-		sum = scores.reduce(function(prev, curr){
-			return prev + curr;
-		}),
-		avg = sum / scores.length;
+```javascript
+var scores = [88, 99, 87, 76, 67],
+	sum = scores.reduce(function(prev, curr){
+		return prev + curr;
+	}),
+	avg = sum / scores.length;
 
-	console.log("总分：", sum); // 417
-	console.log("平均分：", avg); // 83.4
+console.log("总分：", sum); // 417
+console.log("平均分：", avg); // 83.4
+```
 
 ### 4.2 reduceRight() ###
 
 reduceRight() 跟 reduce() 相比，用法类似：
 
-	array.reduceRight(callback[, initialValue])
+```javascript
+array.reduceRight(callback[, initialValue])
+```
 
 实现上差异在于 reduceRight() 是从数组的末尾开始实现。
 
 示例：
 
-	[0, 1, 2, 3, 4].reduceRight(function(previousValue, currentValue, index, array) {
-		return previousValue + currentValue;
-	});
+```javascript
+[0, 1, 2, 3, 4].reduceRight(function(previousValue, currentValue, index, array) {
+	return previousValue + currentValue;
+});
+```
 
 reduceRight() 与 reduce() 区别：
 
-	var a = ["1", "2", "3", "4", "5"]; 
-	var left  = a.reduce(function(prev, cur)      { return prev + cur; }); 
-	var right = a.reduceRight(function(prev, cur) { return prev + cur; }); 
+```javascript
+var a = ["1", "2", "3", "4", "5"]; 
+var left  = a.reduce(function(prev, cur)      { return prev + cur; }); 
+var right = a.reduceRight(function(prev, cur) { return prev + cur; }); 
 
-	console.log(left);  // "12345"
-	console.log(right); // "54321"
+console.log(left);  // "12345"
+console.log(right); // "54321"
+```
 
 ## 5. 结尾 ##
 

@@ -1,0 +1,31 @@
+<!-- start custom article footer snippet -->
+<div class="article__content">
+  <hr>
+  <p><strong>您的支持是我的动力。您可以通过以下方式支持我：</strong></p>
+  <ul>
+    <li>关注我的 Github&nbsp;<a style="vertical-align: text-bottom;" href="https://github.com/{{site.author.github}}">
+      <img src="https://img.shields.io/github/followers/{{site.author.github}}.svg?label=Follow&amp;style=social" alt="关注我的 Github">
+    </a></li>
+    <li>打赏</li>
+  </ul>
+  <table>
+    <thead><tr>
+      <th>微信</th>
+      <th>支付宝</th>
+    </tr></thead>
+    <tbody><tr>
+      <td><img style="max-widht: 150px; max-height: 150px" src="/assets/images/wx.png" alt="微信支付二维码"></td>
+      <td><img style="max-widht: 150px; max-height: 150px" src="/assets/images/zfb.png" alt="支付宝二维码"></td>
+    </tr></tbody>
+  </table>
+  
+  <ul class="article__summary">
+    <li>文章标题: {{ page.title }}</li>
+    <li>文章字数: {{ page.content | strip_html | strip_newlines | zh_chars | number_of_words }}</li>
+    <li>本文作者: {{ site.author.name }}</li>
+    <li>发布时间: {{ page.date | date: '%Y年%m月%d日' }}</li>
+    <li>最后更新: {{ page.last_modified_at | default: page.date | date: '%Y年%m月%d日'}}</li>
+    <li>原始链接: <a href="{%- include snippets/page-url.html -%}">{%- include snippets/page-url.html -%}</a></li>
+  </ul>
+</div>
+<!-- end custom article footer snippet -->

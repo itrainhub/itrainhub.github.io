@@ -1,0 +1,62 @@
+---
+layout: page
+titles:
+  # @start locale config
+  en      : &EN       About
+  en-GB   : *EN
+  en-US   : *EN
+  en-CA   : *EN
+  en-AU   : *EN
+  zh-Hans : &ZH_HANS  关于
+  zh      : *ZH_HANS
+  zh-CN   : *ZH_HANS
+  zh-SG   : *ZH_HANS
+  zh-Hant : &ZH_HANT  關於
+  zh-TW   : *ZH_HANT
+  zh-HK   : *ZH_HANT
+  ko      : &KO       소개
+  ko-KR   : *KO
+  fr      : &FR       À propos
+  fr-BE   : *FR
+  fr-CA   : *FR
+  fr-CH   : *FR
+  fr-FR   : *FR
+  fr-LU   : *FR
+  # @end locale config
+comment: false
+show_title: false
+permalink: /about.html
+---
+
+{%- include snippets/assign.html
+  target = site.data.variables.default.page.sharing
+  source0=layout.sharing
+  source1=page.sharing -%}
+{%- assign _sharing = __return -%}
+
+<div class="layout--article">
+  <div class="article__content" itemprop="articleBody">
+    <div class="about__container">
+      <div class="about__avatar">
+        {%- include snippets/prepend-baseurl.html path='/assets/images/avatar.png' -%}
+        <img src="{{ __return }}" alt="头像">
+      </div>
+      <ul class="about__info">
+        <li>isaac，江湖人称小明</li>
+        <li>个人站点：<a href="http://www.itrain.top" target="_blank">http://www.itrain.top</a></li>
+        <li>Github：<a href="http://github.com/itrainhub" target="_blank">http://github.com/itrainhub</a></li>
+        <li>Email：<a href="mailto:services@itrain.top">156246158@qq.com</a></li>
+        <li>QQ：156246158</li>
+        <li>HTML5 前端工程师，现在成都某公司任前端开发工程师。</li>
+        <li>平时喜欢逛逛技术论坛，整理一些个人笔记，空闲时间搞点新技术。</li>
+      </ul>
+    </div>    
+  </div>
+
+  {%- if _sharing -%}
+    <section class="article__sharing d-print-none">{%- include sharing.html -%}</section>
+  {%- endif -%}
+</div>
+
+{%- include snippets/prepend-baseurl.html path='/assets/js/article.js' -%}
+<script type="text/javascript" src="{{ __return }}"></script>

@@ -1,9 +1,8 @@
 ---
-layout: post
 title: JavaScript 执行上下文
-date: 2017-01-27
-category: JavaScript
-tags: [执行上下文]
+category: javascript
+tags: [执行上下文, context]
+key: javascript_execution_context
 ---
 
 ## 1. 概要
@@ -22,7 +21,7 @@ tags: [执行上下文]
 
 逻辑上来说，一系列活动的执行上下文组成了一个栈，全局上下文总是位于栈底，当前活动的执行上下文位于栈顶。当在不同的上下文之间进入和退出时，栈会被修改（压栈或弹栈）。
 
-![函数代码](/images/posts/jsexecontext/ecstack.jpg)
+![函数代码](/assets/images/jsexecontext/ecstack.jpg)
 
 ## 3. 可执行代码类型
 
@@ -30,8 +29,10 @@ tags: [执行上下文]
 
 例如，我们定义一个数组来描述执行上下文的栈结构：
 
-	ECStack = [];
-	
+```javascript
+ECStack = [];
+```
+
 每当进入一个函数时（甚至该函数是被递归调用或是一个构造函数），都会产生一个压栈操作，内置的 eval 函数也不例外。
 
 当代码在执行时，通常其执行环境被认为是以下之一：
@@ -46,33 +47,39 @@ tags: [执行上下文]
 
 在初始化的时候（程序开始），ECStack 如下所示：
 
-	ECStack = [
-		globalContext
-	];
+```javascript
+ECStack = [
+	globalContext
+];
+```
 
 **函数代码**
 
 一旦控制器进入函数代码，就会有新的元素会被压栈到 ECStack 中。需要注意的是，实体函数并不包含内部函数的代码。例如，执行下述代码：
 
-	(function foo(i){
-		if (i === 3) return;
-		console.log(i);
-		foo(++i);
-	}(0));
-	
+```javascript
+(function foo(i){
+	if (i === 3) return;
+	console.log(i);
+	foo(++i);
+}(0));
+```
+
 之后，ECStack 被修改为：
 
-	ECStack = [
-		globalContext
-		functionContext -- foo() i = 0
-		functionContext -- foo() i = 1 递归调用
-		functionContext -- foo() i = 2 递归调用
-		functionContext -- foo() i = 3 递归调用
-	];
+```javascript
+ECStack = [
+	globalContext
+	functionContext -- foo() i = 0
+	functionContext -- foo() i = 1 递归调用
+	functionContext -- foo() i = 2 递归调用
+	functionContext -- foo() i = 3 递归调用
+];
+```
 
 每次函数返回，退出当前活动的执行上下文时，ECStack 就会被执行对应的退栈操作。待这些代码都执行完毕后，ECStack 栈中就只剩下一个执行上下文（globalContext），直到整个程序结束。
 
-![函数代码](/images/posts/jsexecontext/es1.gif)
+![函数代码](/assets/images/jsexecontext/es1.gif)
 
 **eval 代码**
 
@@ -80,46 +87,49 @@ tags: [执行上下文]
 
 示例：
 
-	var x = 10;
-	console.log("x = " + x); // 10
-	eval("var x = 20;");
-	(function(){
-		eval("var x = 30;");
-		console.log("x = " + x); // 30
-	}());
-	console.log("x = " + x); // 20
-	
+```javascript
+var x = 10;
+console.log("x = " + x); // 10
+eval("var x = 20;");
+(function(){
+	eval("var x = 30;");
+	console.log("x = " + x); // 30
+}());
+console.log("x = " + x); // 20
+```
+
 ECStack 变化如下：
-	
-	// 初始
-	ECStack = [
-		globalContext
-	];
-	
-	// eval("var x = 20;"); 调用上下文是全局上下文，压栈
-	ECStack.push(
-		evalContext -- callingContext:globalContext
-	);
-	
-	// eval() 调用结束，退出 eval 上下文，全局上下文中 x 被修改，退栈
-	ECStack.pop();
-	
-	// (function(){}())，自执行函数被调用，压栈
-	ECStack.push(
-		functionContext
-	);
-	
-	// eval("var x = 30;"); 调用上下文是函数上下文，压栈
-	ECStack.push(
-		evalContext -- callingContext:functionContext
-	);
-	
-	// eval() 调用结束，退出 eval 上下文，函数上下文中定义 x，退栈
-	ECStack.pop();
-	
-	// 自执行函数调用结束，退栈
-	ECStack.pop();
-	
+```javascript
+// 初始
+ECStack = [
+	globalContext
+];
+
+// eval("var x = 20;"); 调用上下文是全局上下文，压栈
+ECStack.push(
+	evalContext -- callingContext:globalContext
+);
+
+// eval() 调用结束，退出 eval 上下文，全局上下文中 x 被修改，退栈
+ECStack.pop();
+
+// (function(){}())，自执行函数被调用，压栈
+ECStack.push(
+	functionContext
+);
+
+// eval("var x = 30;"); 调用上下文是函数上下文，压栈
+ECStack.push(
+	evalContext -- callingContext:functionContext
+);
+
+// eval() 调用结束，退出 eval 上下文，函数上下文中定义 x，退栈
+ECStack.pop();
+
+// 自执行函数调用结束，退栈
+ECStack.pop();
+```
+
 旧版本的 SpiderMonkey 引擎中 eval() 可传第二个参数表示调用上下文，但这个参数不是标准的参数，所以 1.9.1（Firefox 3.5）以后版本中删除了该参数的使用。
 
 正因为 eval 执行时会影响到其调用上下文，所以在非必要时尽量不要使用到 eval() 函数：
@@ -146,12 +156,14 @@ ECStack 变化如下：
 
 可以将每个执行上下文看作是拥有 3 个属性的对象：
 
-	executionContextObj = {
-		'scopeChain': { /* variableObject + all parent execution context's variableObject */ },
-		'variableObject': { /* function arguments / parameters, inner variable and function declarations */ },
-		'this': {}
-	}
-	
+```javascript
+executionContextObj = {
+	'scopeChain': { /* variableObject + all parent execution context's variableObject */ },
+	'variableObject': { /* function arguments / parameters, inner variable and function declarations */ },
+	'this': {}
+}
+```
+
 ### 4.2 激活/变量对象（Activation / Variable Object）
 
 executionContextObj 对象是在函数被激活但实际函数被执行之前创建的，我们知道这是在执行上下文创建的第 1 个阶段--创建阶段。这时，解释器会扫描函数的参数、arguments、局部函数、局部变量以创建 executionContextObj 对象，扫描的结果成为 executionContextObj 对象的 variableObject 属性。
@@ -178,72 +190,80 @@ executionContextObj 对象是在函数被激活但实际函数被执行之前创
 
 下面来看个示例及分析：
 
-	function foo(i) {
-		var a = 'hello';
-		var b = function privateB() {
+```javascript
+function foo(i) {
+	var a = 'hello';
+	var b = function privateB() {
 
-		};
-		function c() {
+	};
+	function c() {
 
-		}
 	}
+}
 
-	foo(22);
-	
+foo(22);
+```
+
 调用 `foo(22)` 时，创建阶段如下：
 
-	fooExecutionContext = {
-		scopeChain: { ... },
-		variableObject: {
-			arguments: {
-				0: 22,
-				length: 1
-			},
-			i: 22,
-			c: pointer to function c()
-			a: undefined,
-			b: undefined
+```javascript
+fooExecutionContext = {
+	scopeChain: { ... },
+	variableObject: {
+		arguments: {
+			0: 22,
+			length: 1
 		},
-		this: { ... }
-	}
-	
+		i: 22,
+		c: pointer to function c()
+		a: undefined,
+		b: undefined
+	},
+	this: { ... }
+}
+```
+
 由此可见，在创建阶段，除了arguments、函数的声明、以及参数被赋予了具体的属性值外，其它的变量属性默认的都是 undefined。一旦创建阶段结束，接下来就进入代码执行阶段，这个阶段完成后，上述执行上下文对象如下:
 
-	fooExecutionContext = {
-		scopeChain: { ... },
-		variableObject: {
-			arguments: {
-				0: 22,
-				length: 1
-			},
-			i: 22,
-			c: pointer to function c()
-			a: 'hello',
-			b: pointer to function privateB()
+```javascript
+fooExecutionContext = {
+	scopeChain: { ... },
+	variableObject: {
+		arguments: {
+			0: 22,
+			length: 1
 		},
-		this: { ... }
-	}
-	
+		i: 22,
+		c: pointer to function c()
+		a: 'hello',
+		b: pointer to function privateB()
+	},
+	this: { ... }
+}
+```
+
 ## 5. 再述 hoisting
 
 我们可以在网上找到很多 JavaScript 中关于 hoisting 的定义说明：在函数中声明的变量以及函数，其作用域会提升到函数顶部。然而却没有解释说关于提升的详情，有了解释器如何创建活动对象的理论知识，我们就可以很轻易的分析出原因了。
 
 我们再看下面的示例：
 
-	​(function() {
-		console.log(typeof foo); // function pointer
-		console.log(typeof bar); // undefined
+```javascript
+(function() {
+	console.log(typeof foo); // function pointer
+	console.log(typeof bar); // undefined
 
-		var foo = 'hello',
-			bar = function() {
-				return 'world';
-			};
+	var foo = 'hello',
+		bar = function() {
+			return 'world';
+		};
 
-		function foo() {
-			return 'hello';
-		}
-	}());​
-	
+	function foo() {
+		return 'hello';
+	}
+}());
+```
+
 下面这些问题我们现在可以回答了：
 
 **为什么我们能够在声明 foo 之前访问到它？**
@@ -264,10 +284,10 @@ bar 是一个函数表达式，它实际上是一个变量，被赋予函数的�
 
 希望本文的这些说明能够使大家对执行上下文有一定的认识，这些基本理论对于执行上下文相关的细节（诸如变量对象、作用域链等等）分析是非常必要的。
 
-参考：
-
-[What is the Execution Context & Stack in JavaScript?](http://davidshariff.com/blog/what-is-the-execution-context-in-javascript/)
-
-[ECMA-262-3 in detail. Chapter 1. Execution Contexts.](http://dmitrysoshnikov.com/ecmascript/chapter-1-execution-contexts/)
-
-[MDN eval](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval)
+> 参考：
+>
+> [What is the Execution Context & Stack in JavaScript?](http://davidshariff.com/blog/what-is-the-execution-context-in-javascript/)
+>
+> [ECMA-262-3 in detail. Chapter 1. Execution Contexts.](http://dmitrysoshnikov.com/ecmascript/chapter-1-execution-contexts/)
+>
+> [MDN eval](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval)

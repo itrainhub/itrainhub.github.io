@@ -1,9 +1,8 @@
 ---
-layout: post
 title: 使用 window.requestAnimationFrame 实现动画效果
-date: 2017-01-26
-category: JavaScript
+category: javascript
 tags: [requestAnimationFrame]
+key: javascript_request_animation_frame
 ---
 
 ## 1. 简介
@@ -20,7 +19,7 @@ tags: [requestAnimationFrame]
 
 了解了帧的概念，我们再回顾一下[《浏览器是如何工作的？》](/2016/11/javascript_how_broswers_work/)。
 
-![浏览器如何工作](/images/posts/jshowbrowserworks/2.png)
+![浏览器如何工作](/assets/images/jshowbrowserworks/2.png)
 
 浏览器中网页的生成过程大致可以分成五步：
 
@@ -40,17 +39,17 @@ tags: [requestAnimationFrame]
 
 网页动画的每一帧都是一次重新渲染。每秒低于 24 帧的动画，人眼就能捕获到停顿，动画效果就感觉有卡顿，一般网页动画，需要达到 30 至 60 fps 才能比较流畅。网页动画和电影动画的帧率又有些差别，可参考 [https://www.zhihu.com/question/21081976](https://www.zhihu.com/question/21081976) 继续了解，不详细说明。
 
-![刷新](/images/posts/jsframes/frame1.jpg)
+![刷新](/assets/images/jsframes/frame1.jpg)
 
 大多数显示器的刷新频率是 60Hz（1Hz = 1次/秒），所以，如果网页动画能够做到每秒 60 帧，就会跟显示器同步刷新，达到最佳的视觉效果。这意味着，一秒之内进行 60 次重新渲染，每次重新渲染的时间不能超过 16.7 毫秒，这也是我们在使用 setTimeout() 或 setInterval() 定时器实现动画效果时推荐的时间间隔。
 
-![图片2](/images/posts/jsframes/frame2.jpg)
+![图片2](/assets/images/jsframes/frame2.jpg)
 
 但是，使用 setTimeout() 和 setInterval() 绘制的动画并没有为 Web 开发人员提供有效的方法来规划动画的图形计时器。这导致了动画过度绘制，浪费 CPU 周期以及消耗额外的电能等问题。而且，即使看不到网站，特别是当网站使用背景选项卡中的页面或浏览器已最小化时，动画都会频繁出现（新版浏览器中对此也有优化，可参见[翻译：setInterval与requestAnimationFrame的时间间隔测试](https://segmentfault.com/a/1190000000386368)）。
 
 使用时间间隔 10ms（过度绘制）的计时器绘制动画时，计时与显示器刷新频率可能不匹配，如下所示：
 
-![图片3](/images/posts/jsframes/frame3.png)
+![图片3](/assets/images/jsframes/frame3.png)
 
 上面一行表示大多数监视器上显示的 16.7ms 显示频率，而下面一行表示 10ms setTimeout()。每个第三个图形都无法绘制（由红色箭头指示），因为在显示器刷新间隔之前发生了其他绘制请求。这种过度绘制的情况会导致动画断续显示，因为所有第三帧都会丢失。这种计时器定时时间降低也会对电池使用寿命造成负面影响，并会降低其它应用的性能。
 
@@ -62,56 +61,62 @@ requestAnimationFrame() 方法原理其实跟 setTimeout 差不多，通过递�
 
 语法：
 
-	var id = window.requestAnimationFrame(callback);
-	
+```javascript
+var id = window.requestAnimationFrame(callback);
+```
+
 callback 参数为回调函数，在每次重新绘制动画时调用该函数，该回调函数有一个参数，表示当前时间距离开始触发 requestAnimationFrame 的回调的时间。
 
 该方法返回一个长整型非 0 值，作为唯一的标识符。可以像停止定时器 clearTimeout() 一样，将返回值传递到 window.cancelAnimationFrame() 中，取消一个先前通过调用 window.requestAnimationFrame() 方法添加到计划中的动画帧请求。
 
 下面是一个旋转动画的例子，元素每一帧旋转 1 度，为了快速查找页面元素及绑定事件处理，使用了 jQuery：
 
-	<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
-	<script type="text/javascript">
-		$(function(){
-			// 点击按钮，开启旋转动画
-			$("#btn").click(function(){
-				update();
-			});
-			
-			// 角度
-			var degrees = 0;
-			
-			// 动画方法
-			function update() {
-				if (degrees >= 360) return;
-				$("#box").css("transform", "rotate("+ (++degrees) +"deg)");
-				window.requestAnimationFrame(update); // 递归调用实现动画效果
-			}
+```html
+<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		// 点击按钮，开启旋转动画
+		$("#btn").click(function(){
+			update();
 		});
-	</script>
-	
+		
+		// 角度
+		var degrees = 0;
+		
+		// 动画方法
+		function update() {
+			if (degrees >= 360) return;
+			$("#box").css("transform", "rotate("+ (++degrees) +"deg)");
+			window.requestAnimationFrame(update); // 递归调用实现动画效果
+		}
+	});
+</script>
+```
+
 <button id="btn">按钮</button>
 
 <div id="box" style="width:100px;height:100px;background:red;position:relative;top:0;left:0;border-right:3px solid black"></div><script src="http://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script><script type="text/javascript">$(function(){function n(){t>=360||($("#box").css("transform","rotate("+ ++t+"deg)"),window.requestAnimationFrame(n))}$("#btn").click(function(){n()});var t=0});</script>
 
 再举一个模拟进度条的例子，点击按钮后进度从 0 增长到 100%：
 
-	<script type="text/javascript">
-		$(function(){
-			$("#btn2").click(function(){
-				update();
-			});
-
-			// 当前进度
-			var progress = 0;
-			// 动画方法
-			function update() {
-				if (progress >=  100) return;
-				$("#progressbar").css("width", ++progress * 2).text(progress+"%");
-				window.requestAnimationFrame(update); // 递归调用实现动画效果
-			}
+```html
+<script type="text/javascript">
+	$(function(){
+		$("#btn2").click(function(){
+			update();
 		});
-	</script>
+
+		// 当前进度
+		var progress = 0;
+		// 动画方法
+		function update() {
+			if (progress >=  100) return;
+			$("#progressbar").css("width", ++progress * 2).text(progress+"%");
+			window.requestAnimationFrame(update); // 递归调用实现动画效果
+		}
+	});
+</script>
+```
 
 <button id="btn2">按钮</button>
 
@@ -119,7 +124,7 @@ callback 参数为回调函数，在每次重新绘制动画时调用该函数�
 
 ## 3. 浏览器兼容问题
 
-![兼容](/images/posts/jsframes/browser_support.png)
+![兼容](/assets/images/jsframes/browser_support.png)
 
 更为具体的兼容性大家可以通过 [caniuse](http://caniuse.com/#search=requestAnimationFrame) 查询。
 
@@ -127,50 +132,52 @@ callback 参数为回调函数，在每次重新绘制动画时调用该函数�
 
 以下借鉴 paulirish 发布在 GitHub Gist 上的代码片段 [requestAnimationFrame polyfill](https://gist.github.com/paulirish/1579671)，用于在不支持 requestAnimationFrame 的浏览器中回退到 setTimeout 来实现：
 
-	// http://paulirish.com/2011/requestanimationframe-for-smart-animating/
-	// http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
-	
-	// requestAnimationFrame polyfill by Erik Möller. fixes from Paul Irish and Tino Zijdel
-	
-	// MIT license
-	
-	(function() {
-	    var lastTime = 0;
-	    var vendors = ['ms', 'moz', 'webkit', 'o'];
-	    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-	        window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
-	        window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] 
-	                                   || window[vendors[x]+'CancelRequestAnimationFrame'];
-	    }
-	 
-	    if (!window.requestAnimationFrame)
-	        window.requestAnimationFrame = function(callback, element) {
-	            var currTime = new Date().getTime();
-	            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-	            var id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
-	              timeToCall);
-	            lastTime = currTime + timeToCall;
-	            return id;
-	        };
-	 
-	    if (!window.cancelAnimationFrame)
-	        window.cancelAnimationFrame = function(id) {
-	            clearTimeout(id);
-	        };
-	}());
-	
+```javascript
+// http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+// http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
+
+// requestAnimationFrame polyfill by Erik Möller. fixes from Paul Irish and Tino Zijdel
+
+// MIT license
+
+(function() {
+    var lastTime = 0;
+    var vendors = ['ms', 'moz', 'webkit', 'o'];
+    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+        window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+        window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] 
+                                   || window[vendors[x]+'CancelRequestAnimationFrame'];
+    }
+ 
+    if (!window.requestAnimationFrame)
+        window.requestAnimationFrame = function(callback, element) {
+            var currTime = new Date().getTime();
+            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+            var id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
+              timeToCall);
+            lastTime = currTime + timeToCall;
+            return id;
+        };
+ 
+    if (!window.cancelAnimationFrame)
+        window.cancelAnimationFrame = function(id) {
+            clearTimeout(id);
+        };
+}());
+```
+
 ## 4. 小结
 
 虽然 CSS3 中的 transition 或 animation 动画也能实现与 requestAnimationFrame 一样的绘制原理，但 CSS3 动画也不是适用于所有的属性，如 scrollTop 值，CSS3 就无能为力了。同时，CSS3 支持的动画效果有限，如果要实现某些特殊的缓动效果，还得使用 requestAnimationFrame 或 setTimeout 来实现。而 setTimeout 又可能存在过度绘制问题，浪费 CPU 资源或消耗更多额外的电池电能，所以使用 requestAnimationFrame 来优化是很有必要的。
 
-参考：
-
-[基于脚本的动画的计时控制（“requestAnimationFrame”）](https://msdn.microsoft.com/library/hh920765(v=vs.85).aspx)
-
-[网页性能管理详解：浅谈chrome-Timeline及window.requestAnimationFrame()方法](http://www.mamicode.com/info-detail-1057819.html)
-
-[MDN window.requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame)
-
-[requestAnimationFrame for Smart Animating](https://www.paulirish.com/2011/requestanimationframe-for-smart-animating/)
-
-[CSS3动画那么强，requestAnimationFrame还有毛线用？](http://www.zhangxinxu.com/wordpress/2013/09/css3-animation-requestanimationframe-tween-动画算法/)
+> 参考：
+>
+> [基于脚本的动画的计时控制（“requestAnimationFrame”）](https://msdn.microsoft.com/library/hh920765(v=vs.85).aspx)
+>
+> [网页性能管理详解：浅谈chrome-Timeline及window.requestAnimationFrame()方法](http://www.mamicode.com/info-detail-1057819.html)
+>
+> [MDN window.requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame)
+>
+> [requestAnimationFrame for Smart Animating](https://www.paulirish.com/2011/requestanimationframe-for-smart-animating/)
+>
+> [CSS3动画那么强，requestAnimationFrame还有毛线用？](http://www.zhangxinxu.com/wordpress/2013/09/css3-animation-requestanimationframe-tween-动画算法/)

@@ -1,9 +1,8 @@
 ---
-layout: post
 title: PHP 语言基础
-date: 2016-12-11
 category: PHP
-tags: [PHP]
+tags: [PHP, 数据类型]
+key: php_basics
 ---
 
 ## 1. PHP 标记 ##
@@ -14,19 +13,21 @@ PHP 文件的默认扩展名为 .php，在 PHP 文件中通常包含 HTML 标签
 
 将 PHP 脚本用 `<?php ?>` 的标记包含起来：
 
-	<!DOCTYPE html>
-	<html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<title>第一个 PHP 页面</title>
-	</head>
-	<body>
-		<h1>第一个 PHP 页面</h1>
-		<?php
-			echo "hello world...";
-		?>
-	</body>
-	</html>
+```php+HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>第一个 PHP 页面</title>
+</head>
+<body>
+	<h1>第一个 PHP 页面</h1>
+	<?php
+		echo "hello world...";
+	?>
+</body>
+</html>
+```
 
 标准风格的标记是推荐使用的标记，在 HTML、XHTML、XML 中都可以使用。
 
@@ -36,53 +37,59 @@ echo 主要用于输出内容，向页面输出时，可包含 HTML 标签。
 
 使用 `<script language="php"></script>` 标记：
 
-	<!DOCTYPE html>
-	<html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<title>第一个 PHP 页面</title>
-	</head>
-	<body>
-		<h1>第一个 PHP 页面</h1>
-		<script language="php">
-			echo "这是脚本风格...";
-		</script>
-	</body>
-	</html>
+```php+HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>第一个 PHP 页面</title>
+</head>
+<body>
+	<h1>第一个 PHP 页面</h1>
+	<script language="php">
+		echo "这是脚本风格...";
+	</script>
+</body>
+</html>
+```
 
 ### 1.3 简短风格 ###
 
 使用 `<? ?>` 标记：
 
-	<!DOCTYPE html>
-	<html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<title>第一个 PHP 页面</title>
-	</head>
-	<body>
-		<h1>第一个 PHP 页面</h1>
-		<? echo "这是简短风格..."; ?>
-	</body>
-	</html>
+```php+HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>第一个 PHP 页面</title>
+</head>
+<body>
+	<h1>第一个 PHP 页面</h1>
+	<? echo "这是简短风格..."; ?>
+</body>
+</html>
+```
 
 ### 1.4 asp 风格 ###
 
 使用 `<% %>` 标记：
 
-	<!DOCTYPE html>
-	<html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<title>第一个 PHP 页面</title>
-	</head>
-	<body>
-		<h1>第一个 PHP 页面</h1>
-		<%
-			echo "这是 asp 风格...";
-		%>
-	</body>
-	</html>
+```php+HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>第一个 PHP 页面</title>
+</head>
+<body>
+	<h1>第一个 PHP 页面</h1>
+	<%
+		echo "这是 asp 风格...";
+	%>
+</body>
+</html>
+```
 
 注意，要使用简短风格和 asp 风格，还需要到 php.ini 文件中进行配置，将 short_open_tag、asp_tags 设置为 ON，再重新服务器，但还是推荐标准风格。
 
@@ -127,23 +134,25 @@ PHP 和 JavaScript 类似，也是一门弱类型的语言，即在定义变量�
 
 示例：
 
-	<!DOCTYPE html>
-	<html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<title>第一个 PHP 页面</title>
-	</head>
-	<body>
-		<h1>第一个 PHP 页面</h1>
-		<?php
-			$txt="Hello world!";
-			$x=5;
-			$y=10.5;
-	
-			echo "x = $x, y = $y, txt = $txt";
-		?>
-	</body>
-	</html>
+```php+HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>第一个 PHP 页面</title>
+</head>
+<body>
+	<h1>第一个 PHP 页面</h1>
+	<?php
+		$txt="Hello world!";
+		$x=5;
+		$y=10.5;
+
+		echo "x = $x, y = $y, txt = $txt";
+	?>
+</body>
+</html>
+```
 
 ### 4.2 变量作用域 ###
 
@@ -157,51 +166,59 @@ PHP 和 JavaScript 类似，也是一门弱类型的语言，即在定义变量�
 
 局部变量与全局变量：
 
-	$test = "函数外部的 test 变量...";
+```php
+$test = "函数外部的 test 变量...";
 
-	function fn() {
-		$test = "fn 函数内部的 test 变量...";
-		echo "fn函数内部输出：$test<br>";
-		global $test;
-		$test = "修改了外部的 test 变量...";
-		echo "fn函数内部输出：$test<br>";
-	}
+function fn() {
+	$test = "fn 函数内部的 test 变量...";
+	echo "fn函数内部输出：$test<br>";
+	global $test;
+	$test = "修改了外部的 test 变量...";
+	echo "fn函数内部输出：$test<br>";
+}
 
-	fn();
-	echo "函数外部输出：$test<br>";
+fn();
+echo "函数外部输出：$test<br>";
+```
 
 执行结果：
 
-	fn函数内部输出：fn 函数内部的 test 变量...
-	fn函数内部输出：修改了外部的 test 变量...
-	函数外部输出：修改了外部的 test 变量...
+```php
+fn函数内部输出：fn 函数内部的 test 变量...
+fn函数内部输出：修改了外部的 test 变量...
+函数外部输出：修改了外部的 test 变量...
+```
 
 局部变量与静态变量：
 
-	function fn1(){
-		static $num = 0;
-		$num += 1;
-		echo "fn1 : num = $num ";
-	}
+```php
+function fn1(){
+	static $num = 0;
+	$num += 1;
+	echo "fn1 : num = $num ";
+}
 
-	function fn2(){
-		$num = 0;
-		$num += 1;
-		echo "fn2 : num = $num ";
-	}
+function fn2(){
+	$num = 0;
+	$num += 1;
+	echo "fn2 : num = $num ";
+}
 
-	for($i = 0; $i < 5; $i++) {
-		fn1();
-	}
-	echo "<br>";
-	for($i = 0; $i < 5; $i++) {
-		fn2();
-	}
+for($i = 0; $i < 5; $i++) {
+	fn1();
+}
+echo "<br>";
+for($i = 0; $i < 5; $i++) {
+	fn2();
+}
+```
 
 执行结果：
 
-	fn1 : num = 1 fn1 : num = 2 fn1 : num = 3 fn1 : num = 4 fn1 : num = 5 
-	fn2 : num = 1 fn2 : num = 1 fn2 : num = 1 fn2 : num = 1 fn2 : num = 1
+```php
+fn1 : num = 1 fn1 : num = 2 fn1 : num = 3 fn1 : num = 4 fn1 : num = 5 
+fn2 : num = 1 fn2 : num = 1 fn2 : num = 1 fn2 : num = 1 fn2 : num = 1
+```
 
 ## 5. 数据类型 ##
 
@@ -242,9 +259,11 @@ float 为浮点数类型，既可用于存放整数，又可用于存放小数�
 
 界定符是从 PHP 4.0 开始支持的，使用时在界定符后跟一个标识符，然后是字符串内容，字符串内容结束后要以同样的标识符标记，如：
 
-	echo <<<str
-		这是一个字符串内容
-	str;
+```php
+echo <<<str
+	这是一个字符串内容
+str;
+```
 
 <<< 后跟的 str 就是标识符，结束标识符必须另起一行，并且不允许有空格，也不允许在其前后有任何空格或其它符号。
 
@@ -263,9 +282,11 @@ float 为浮点数类型，既可用于存放整数，又可用于存放小数�
 
 定义数组的语法为：
 
-	$arr = (value1, value2, value3, ...); // 或
-	$arr[key] = value; // 或
-	$arr = array(key1=>value1, key2=>value2, ...);
+```php
+$arr = (value1, value2, value3, ...); // 或
+$arr[key] = value; // 或
+$arr = array(key1=>value1, key2=>value2, ...);
+```
 
 key 为数组元素的索引，value 是数组元素值。声明数组后，数组中元素个数也可以动态改变，数组长度也会自动更新。
 
@@ -284,24 +305,30 @@ key 为数组元素的索引，value 是数组元素值。声明数组后，数�
 
 PHP 的数据类型转换是在待转换的变量前加上小括号的方式来转换，如：
 
-	$num = 5;
-	$b = (boolean)$num;
-	echo $num;
+```php
+$num = 5;
+$b = (boolean)$num;
+echo $num;
+```
 
 注意，转换为 boolean 类型时，null、0、未赋值的变量或数组被转换为 false，其它的转换为 true；转换成整型时，布尔型的 false 转换为 0，true 转换为 1，浮点型的小数部分被丢弃，字符串型如果以数字开头就截取到非数字位，否则输出 0。
 
 也可以使用 settype() 函数来转换：
 
-	boolean settype(mixed var, string type)
+```php
+boolean settype(mixed var, string type)
+```
 
 var 为待转换的变量，type 为转换的数据类型，如果转换成功，settype() 返回 true，否则返回 false。
 
 如：
 
-	$str = "8899.283";
-	$b = settype($str, "integer");
-	$num = $str*2;
-	echo $num;
+```php
+$str = "8899.283";
+$b = settype($str, "integer");
+$num = $str*2;
+echo $num;
+```
 
 使用类似 (boolean)、(integer) 的方式转换，原变量的值不会发生改变，但使用 settype() 函数转换后，原变量会被改变为转换后的值。
 
@@ -326,28 +353,34 @@ PHP 内置了用于检测数据类型的函数：
 
 设置常量需要使用到 define() 函数：
 
-	bool define ( string $name , mixed $value [, bool $case_insensitive = false ] )
+```php
+bool define ( string $name , mixed $value [, bool $case_insensitive = false ] )
+```
 
 参数 name 为必选参数，表示常量名称，即标识符。value 也为必选参数，表示常量的值。case_insensitive 是可选参数，如果设置为 true，该常量则大小写不敏感，该参数默认是大小写敏感的。
 
-	// 区分大小写的常量名
-	define("GREETING", "欢迎访问小明的家");
-	echo GREETING;    // 输出 "欢迎访问小明的家"
-	echo '<br>';
-	echo greeting;   // 输出 "greeting"
-	// 不区分大小写的常量名
-	define("WELCOME", "欢迎访问小明的家", true);
-	echo welcome;  // 输出 "欢迎访问小明的家"
+```php
+// 区分大小写的常量名
+define("GREETING", "欢迎访问小明的家");
+echo GREETING;    // 输出 "欢迎访问小明的家"
+echo '<br>';
+echo greeting;   // 输出 "greeting"
+// 不区分大小写的常量名
+define("WELCOME", "欢迎访问小明的家", true);
+echo welcome;  // 输出 "欢迎访问小明的家"
+```
 
 常量在定义后，默认是全局变量，可以在整个运行的脚本的任何地方使用。以下实例演示了在函数内使用常量，即便常量定义在函数外也可以正常使用常量：
 
-	define("GREETING", "欢迎访问小明的家");
-	
-	function myTest() {
-		echo GREETING;
-	}
+```php
+define("GREETING", "欢迎访问小明的家");
 
-	myTest();    // 输出 "欢迎访问小明的家"
+function myTest() {
+	echo GREETING;
+}
+
+myTest();    // 输出 "欢迎访问小明的家"
+```
 
 ## 7. 运算符 ##
 
@@ -405,23 +438,29 @@ xor，表示逻辑异或，两个表达式一真一假时，结果为真。
 
 创建函数的语法结构为：
 
-	function fn_name($var1, $var2, ...) {
-		// main_body;
-	}
+```php
+function fn_name($var1, $var2, ...) {
+	// main_body;
+}
+```
 
 function 是声明函数的关键字，fn_name 为函数名，$var1, $var2, ... 为函数形式参数列表，main_body 为函数主体，实现功能的代码块就写在主体中。
 
 函数定义之后，不会主动起作用，需要经过调用才能发挥作用。函数调用与其它语言类似，通过函数名引用，并传递正确的实际参数即可。
 
-	function area($width, $height) {
-		echo "矩形宽为：$width ，高为：$height ，面积为：" . $width * $height;
-	}
+```php
+function area($width, $height) {
+	echo "矩形宽为：$width ，高为：$height ，面积为：" . $width * $height;
+}
 
-	area(3, 5);
+area(3, 5);
+```
 
 结果：
 
-	矩形宽为：5 ，高为：8 ，面积为：40
+```php
+矩形宽为：5 ，高为：8 ，面积为：40
+```
 
 ### 8.2 函数参数 ###
 
@@ -433,60 +472,72 @@ function 是声明函数的关键字，fn_name 为函数名，$var1, $var2, ... 
 
 将实参的值赋值到对应的形参变量中，在函数内部的操作仅针对形参变量进行，操作结果不会影响到实参，这种参数传递是按值传递。如：
 
-	function area($width, $height) {
-		echo "矩形宽为：$width ，高为：$height ，面积为：" . $width * $height;
-		// 运算后修改形参值
-		$width += 5;
-		$height += 3;
-	}
+```php
+function area($width, $height) {
+	echo "矩形宽为：$width ，高为：$height ，面积为：" . $width * $height;
+	// 运算后修改形参值
+	$width += 5;
+	$height += 3;
+}
 
-	$w = 5;
-	$h = 8;
-	area($w, $h);
-	echo "<br>函数调用结束后：\$w = $w ，\$h = $h";
+$w = 5;
+$h = 8;
+area($w, $h);
+echo "<br>函数调用结束后：\$w = $w ，\$h = $h";
+```
 
 执行结果：
 
-	矩形宽为：5 ，高为：8 ，面积为：40
-	函数调用结束后：$w = 5 ，$h = 8
+```php
+矩形宽为：5 ，高为：8 ，面积为：40
+函数调用结束后：$w = 5 ，$h = 8
+```
 
 **2. 按引用传递**
 
 按引用传递就是将实参的内存地址传递给形参，这样，在函数体内部所有对形参的操作都会影响到实参的值。引用传递是在函数定义时就在形参前添加 "&" 符号，调用时直接传递实参变量即可。
 
-	function area(&$width, &$height) {
-		echo "矩形宽为：$width ，高为：$height ，面积为：" . $width * $height ;
-		// 运算后修改形参值
-		$width += 5;
-		$height += 3;
-	}
+```php
+function area(&$width, &$height) {
+	echo "矩形宽为：$width ，高为：$height ，面积为：" . $width * $height ;
+	// 运算后修改形参值
+	$width += 5;
+	$height += 3;
+}
 
-	$w = 5;
-	$h = 8;
-	area($w, $h);
-	echo "<br>函数调用结束后：\$w = $w ，\$h = $h";
+$w = 5;
+$h = 8;
+area($w, $h);
+echo "<br>函数调用结束后：\$w = $w ，\$h = $h";
+```
 
 执行结果：
 
-	矩形宽为：5 ，高为：8 ，面积为：40
-	函数调用结束后：$w = 10 ，$h = 11
+```php
+矩形宽为：5 ，高为：8 ，面积为：40
+函数调用结束后：$w = 10 ，$h = 11
+```
 
 **3. 默认参数**
 
 默认参数也叫可选参数，即在函数调用时，参数可以不传递，在函数体内部对未传递的参数取一个默认值。在函数声明时可以指定某个参数为可选参数，将可选参数放在参数列表末尾，并为其指定默认值。
 
-	function area($radius, $pi=3.14) {
-		echo "半径为 $radius 的圆面积为：" . $pi * $radius * $radius . "<br>";
-	}
+```php
+function area($radius, $pi=3.14) {
+	echo "半径为 $radius 的圆面积为：" . $pi * $radius * $radius . "<br>";
+}
 
-	area(2);
+area(2);
 
-	area(2, 3.14159);
+area(2, 3.14159);
+```
 
 执行结果： 
 
-	半径为 2 的圆面积为：12.56
-	半径为 2 的圆面积为：12.56636
+```php
+半径为 2 的圆面积为：12.56
+半径为 2 的圆面积为：12.56636
+```
 
 ### 8.3 返回值 ###
 
@@ -494,16 +545,20 @@ function 是声明函数的关键字，fn_name 为函数名，$var1, $var2, ... 
 
 return 的作用是将函数的值返回给函数的调用者，即将程序控制权返回到调用者的作用域，所以函数体内执行了 return 语句，则结束了函数的调用。如果在全局作用域内使用了 return 语句，那么将终止脚本的执行。
 
-	function calc($salary, $tax=0.03, $minus=0){
-		return $salary - (($salary - 3500) * $tax - $minus);
-	}
+```php
+function calc($salary, $tax=0.03, $minus=0){
+	return $salary - (($salary - 3500) * $tax - $minus);
+}
 
-	$income = calc(5000);
-	echo "月工资 5000，到手：$income";
+$income = calc(5000);
+echo "月工资 5000，到手：$income";
+```
 
 执行结果：
 
-	月工资 5000，到手：4955
+```php
+月工资 5000，到手：4955
+```
 
 ## 9. 小结 ##
 

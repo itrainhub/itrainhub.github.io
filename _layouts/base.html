@@ -1,0 +1,25 @@
+---
+layout: none
+---
+<!DOCTYPE html>
+{%- include snippets/get-lang.html -%}
+<html lang="{{ __return }}">
+  <head>
+    {%- include analytics.html -%}
+    {%- include head.html -%}
+    {%- include snippets/prepend-baseurl.html path='/assets/js/utils/utils.js' -%}
+    <script type="text/javascript" src="{{ __return }}"></script>
+    {%- include snippets/prepend-baseurl.html path='/assets/lib/throttle.js' -%}
+    <script type="text/javascript" src="{{ __return }}"></script>
+    {%- include snippets/prepend-baseurl.html path='/assets/lib/lazyload.js' -%}
+    <script type="text/javascript" src="{{ __return }}"></script>
+    {%- include scripts/variables.html -%}
+  </head>
+  <body>
+    <div class="root" data-is-touch="false">
+      {{ content }}
+    </div>
+    {%- include snippets/prepend-baseurl.html path='/assets/js/common.js' -%}
+    <script type="text/javascript" src="{{ __return }}"></script>
+  </body>
+</html>

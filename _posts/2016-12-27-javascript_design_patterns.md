@@ -1,9 +1,8 @@
 ---
-layout: post
 title: JavaScript 设计模式
-date: 2016-12-27
-category: JavaScript
-tags: [JavaScript, 设计模式]
+category: javascript
+tags: [javascript, 设计模式]
+key: javascript_design_patterns
 ---
 
 ## 1. 概述
@@ -55,7 +54,7 @@ GoF 在《设计模式》一书中也提到，如果不是一个有经验的面�
 
 借鉴《设计模式》一文的图来整体描述一下：
 
-![设计模式](/images/posts/jsdsnptn/category.jpg)
+![设计模式](/assets/images/jsdsnptn/category.jpg)
 
 ## 3. 设计原则
 
