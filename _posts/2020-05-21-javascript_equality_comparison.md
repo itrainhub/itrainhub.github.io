@@ -21,7 +21,7 @@ key: javascript_equality_comparison
 
 ## 规范
 
-### ==
+### 运算符==说明
 
 为了弄清楚 `null == 0` 结果为 `false` 的原因，查阅 [ECMAScript® 2019 Language Specification](http://www.ecma-international.org/ecma-262/)，在 [7.2.14 节](http://www.ecma-international.org/ecma-262/#sec-abstract-equality-comparison)中有详细的说明：
 
@@ -61,7 +61,7 @@ key: javascript_equality_comparison
 
 再来分析 `null == 0` 的判断，`null` 的类型为 `Null`，根据以上步骤分析，前9步条件都不满足，所以最终返回结果应该为 `false`。
 
-### ===
+### 运算符===说明
 
 > **7.2.15 Strict Equality Comparison**
 >
@@ -90,13 +90,21 @@ key: javascript_equality_comparison
 `===` 是严格比较相等，步骤翻译如下：
 
 1. 如果 `x` 与 `y` 的类型不一致，返回 `false`；
+
 2. 如果 `x` 类型为 `Number`，继续判断：
+   
    a. 如果 `x` 是 `NaN`，返回 `false`；
+   
    b. 如果 `y` 是 `NaN`，返回 `false`；
+   
    c. 如果 `x` 与 `y` 是相同的数字值，返回 `true`；
+   
    d. 如果 `x` 是 `+0`，`y` 是 `-0`，返回 `true`；
+   
    e. 如果 `x` 是 `-0`，`y` 是 `+0`，返回 `true`；
+   
    f. 否则返回 `false`。
+   
 3. 返回 `SameValueNonNumber(x, y)` 的运算结果。
 
 注意：这个算法和 `SameValue` 算法的不同之处在于对有符号 `0` 和 `NaN` 的处理。
@@ -108,27 +116,47 @@ key: javascript_equality_comparison
 > The internal comparison abstract operation SameValueNonNumber(x, y), where neither x nor y are Number values, produces true or false. Such a comparison is performed as follows:
 >
 > 1. Assert: Type(x) is not Number.
+>
 > 2. Assert: Type(x) is the same as Type(y).
+>
 > 3. If Type(x) is Undefined, return true.
+>
 > 4. If Type(x) is Null, return true.
+>
 > 5. If Type(x) is String, then
+>    
 >    a. If x and y are exactly the same sequence of code units (same length and same code units at corresponding indices), return true; otherwise, return false.
+>    
 > 6. If Type(x) is Boolean, then
+>
 >    a. If x and y are both true or both false, return true; otherwise, return false.
+>
 > 7. If Type(x) is Symbol, then
+>
 >    a. If x and y are both the same Symbol value, return true; otherwise, return false.
+>
 > 8. If x and y are the same Object value, return true. Otherwise, return false.
 
 1. 断言 `x` 类型为 `Number`；
+
 2. 断言 `x` 与 `y` 类型相同；
+
 3. 如果 `x` 类型为 `Undefined`，返回 `true`；
+
 4. 如果 `x` 类型为 `Null`，返回 `true`；
+
 5. 如果 `x` 类型为 `String`，继续判断：
+   
    a. 如果 `x` 和 `y` 是相同的字符串序列（相同长度，各位置字符也相同），返回 `true`，否则返回 `false`。
+   
 6. 如果 `x` 类型为 `Boolean`，继续判断：
+
    a. 如果 `x` 和 `y` 都是 `true` 或都是 `false`，返回 `true`，否则返回 `false`。
+
 7. 如果 `x` 类型是 `Symbol`，继续判断：
+
    a. 如果 `x` 和 `y` 是相同的 `Symbol` 值，返回 `true`，否则返回 `false`。
+
 8. 如果 `x` 和 `y` 是相同的对象值，返回 `true`，否则返回 `false`。
 
 以上就是在 `ECMAScript` 规范中关于 `==` 与 `===` 相等比较的说明。
